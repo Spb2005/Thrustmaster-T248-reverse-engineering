@@ -64,8 +64,10 @@ The UART bus handles three main types of data, all transmitted every 250 ms (4 H
         These bytes rotate in order; for example, the sequence starts as D0 D1 D2 D3, then after 250 ms becomes D1 D2 D3 D0, and so on.
         The wheel always responds with:
         F0 00 00 00.
+![Data](pictures/readme/Keep_Alive_1.png)
+![Data](pictures/readme/Keep_Alive_2.png)
 
-   2. Button States
+   3. Button States
         The wheel sends button state messages without waiting for a response from the wheelbase.
         These consist of two alternating 4-byte messages:
         B0 00 00 00 and B1 00 00 00.
@@ -74,8 +76,9 @@ The UART bus handles three main types of data, all transmitted every 250 ms (4 H
                 First set: DPAD-Right, Display, Mode, Encoder-Left Up, Encoder-Left Down, Encoder-Right Up, Encoder-Right Down
                 Second set: BTN 9, BTN 10, BTN 22, BTN 23, BTN 13, DPAD-Up, DPAD-Down, DPAD-Left
                 Third set: BTN 1, BTN 2, BTN 3, BTN 4, BTN 5, BTN 6, BTN 7, BTN 8
+![Data](pictures/readme/Button_Data.png)
 
-   3. Screen Data
+   4. Screen Data
         The screen data consists of 9 bytes sent from the wheelbase:
             The first byte is a constant (42).
             The second byte is a counter that increments with each display message (e.g., 01, then 02 after 250 ms, etc.).
@@ -83,6 +86,8 @@ The UART bus handles three main types of data, all transmitted every 250 ms (4 H
         The wheel responds with 12 bytes that appear to be static, though their purpose remains unclear. For example, the response might be:
         47 0C 2A 02 01 00 80 00 00 00 00 00.
         It is possible that all bytes except the first are used for selecting the displayed data.
+![Data](pictures/readme/Display_Data.png)
+![Data](pictures/readme/Display_Answer.png)
 
 Additional communication occurs when the wheel is plugged in and completes its setup routine. Unfortunately, I was unable to capture these messages due to limitations with my logic analyzer’s recording duration and trigger. Note that when the wheel is powered on without the wheelbase connected, the communication differs entirely; I will include the Pulseview capture files for further analysis.
 
