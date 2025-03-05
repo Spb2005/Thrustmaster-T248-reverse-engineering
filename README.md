@@ -99,3 +99,5 @@ The objective of this project is to emulate a Thrustmaster steering wheel, enabl
 I contacted Taras for assistance with identifying the communication protocol (SPI, UART, etc.), and he provided some guidance. However, that was during the early stages of the reverse engineering process, and I have not followed up since.
 
 Maybe someone can help me reverse engineer the protocoll or has another idea.
+
+Most things will probably be similar in the t124 wheel
