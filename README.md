@@ -31,13 +31,13 @@ After the wheel is removed:
 ![PCB](pictures/PCB-Front.jpg) ![PCB](pictures/PCB-Back1.png)
 
 # Interesting Details in the Schematic
-   1. Microcontroller Pin Usage: All pins of the STM32 are utilized, although PB3 is only connected to a 100Ω pull-down resistor. 
-   2.  Debug Port: On the backside of the PCB, there are pads for a debug port used to program the STM32. These include NRST, SWCLK (PA14), SWDIO (PA13), 3.3V, and GND. ![Schematic](pictures/readme/Debug+Encoder.png)
-   3.  Screen Connections:
+   1. Microcontroller Pin Usage: All pins of the STM32 are utilized, although PB3 is only connected to a 100Ω pull-down resistor.
+   2. LED: The LED is connected to PB5. ![Schematic](pictures/readme/LED.png)
+   3. Debug Port: On the backside of the PCB, there are pads for a debug port used to program the STM32. These include NRST, SWCLK (PA14), SWDIO (PA13), 3.3V, and GND. ![Schematic](pictures/readme/Debug+Encoder.png)
+   4. Screen Connections:
         The screen’s SCL is connected to PA11 via a 27.5Ω resistor.
         SDA is connected to PA12.
         Both lines have 4.7kΩ pull-up resistors, and the EDK pin is connected to GND through a 0Ω resistor. ![Schematic](pictures/readme/Display_Connection.png)
-   4. LED: The LED is connected to PB5. ![Schematic](pictures/readme/LED.png)
    5. Hall Sensors: The Hall sensors are connected to PB7 and PA4. ![Schematic](pictures/readme/Hall_Sensors.png)
    6. Rubber Dome Buttons: These are connected to PA0, PA1, PA8, PA9, PA10, PA13, PA14, PA15, PB0, PB1, PB2, PB4, PB6, PB8, PB9, PC14, and PC15.
    7. Encoder Buttons:
