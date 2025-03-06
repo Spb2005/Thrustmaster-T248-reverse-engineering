@@ -27,7 +27,7 @@ After the wheel is removed:
    The steering wheel uses rubber dome switches combined with an STM32G030K6 microcontroller to handle button presses and control the screen.
    The shifter pedals utilize Hall sensors.
    I have completely reverse-engineered the PCB and its schematic. Note that the PCB layout is not entirely accurate or to scale.
-![PCB](pictures/PCB-Front.jpg) ![PCB](pictures/PCB-Back1.png)
+![PCB](pictures/PCB-Front.jpg) ![PCB](pictures/PCB-Back.png)
 ![PCB](pictures/readme/Front_PCB_Design.png) ![PCB](pictures/readme/Back_PCB_Design.png) 
 
 # Interesting Details in the Schematic
