@@ -1,0 +1,17 @@
+--cpu Cortex-M4.fp
+".\obj\main.o"
+".\obj\vk2c23b_io_i2c.o"
+".\obj\board.o"
+".\obj\clk.o"
+".\obj\timer.o"
+".\obj\sys.o"
+".\obj\retarget.o"
+".\obj\gpio.o"
+".\obj\pwm.o"
+".\obj\i2c.o"
+".\obj\system_m451series.o"
+".\obj\startup_m451series.o"
+--ro-base 0x00000000 --entry 0x00000000 --rw-base 0x20000000 --entry Reset_Handler --first __Vectors --strict
+--map --first='startup_M451Series.o(RESET)' --datacompressor=off --info=inline --entry Reset_Handler --summary_stderr --info summarysizes --map --symbols
+--info sizes --info totals
+--list ".\lst\test_lcdic_v10.map" -o .\obj\test_lcdic_v10.axf

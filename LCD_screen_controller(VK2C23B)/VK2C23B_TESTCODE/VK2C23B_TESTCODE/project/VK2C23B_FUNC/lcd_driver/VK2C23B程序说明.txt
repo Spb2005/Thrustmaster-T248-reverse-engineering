@@ -1,0 +1,8 @@
+1. VK2C23B_I2C
+硬件I2C驱动程序
+
+2. VK2C23B_IO_I2C_DIR
+io脚模拟I2C，sda脚为单向IO，在读ACK和数据时SDA要设为输入脚，其它情况SDA设为输出脚。
+
+3.VK2C23B_IO_I2C_QUASI
+io脚模拟I2C，sda脚为双向IO

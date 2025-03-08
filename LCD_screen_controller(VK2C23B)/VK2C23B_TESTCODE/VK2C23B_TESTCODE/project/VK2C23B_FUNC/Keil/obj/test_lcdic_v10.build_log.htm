@@ -1,0 +1,73 @@
+<html>
+<body>
+<pre>
+<h1>礦ision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: μVision V5.15
+Copyright (C) 2015 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: 1 1, 1, LIC=MGXEV-PZPWD-QHG8A-1NIJ4-VHYE8-US8FV
+ 
+Tool Versions:
+Toolchain:       MDK-ARM Professional  Version: 5.15.0
+Toolchain Path:  C:\Keil_v5\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.05 update 2 (build 169)
+Assembler:       Armasm.exe V5.05 update 2 (build 169)
+Linker/Locator:  ArmLink.exe V5.05 update 2 (build 169)
+Library Manager: ArmAr.exe V5.05 update 2 (build 169)
+Hex Converter:   FromElf.exe V5.05 update 2 (build 169)
+CPU DLL:         SARMCM3.DLL V5.15.0
+Dialog DLL:      DARMCM1.DLL V1.12.0.0
+Target DLL:      NULink\Nu_Link.dll V3.05
+Dialog DLL:      TARMCM1.DLL V1.9.0.0
+ 
+<h2>Project:</h2>
+D:\工作\A工程资料\LCD\抗干扰系列_VK2C\VK2C例程\VK2C23B_TESTCODE\project\VK2C23B_FUNC\Keil\project.uvprojx
+Project File Date:  12/09/2024
+
+<h2>Output:</h2>
+*** Using Compiler 'V5.05 update 2 (build 169)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
+Build target 'project'
+creating preprocessor file for main.c...
+creating preprocessor file for VK2C23B_IO_I2C.c...
+compiling VK2C23B_IO_I2C.c...
+..\lcd_driver\VK2C23B_IO_I2C.c(91): warning:  #223-D: function "VK2C23B_I2C_WRCmd" declared implicitly
+        VK2C23B_I2C_WRCmd(cmd,data);
+..\lcd_driver\VK2C23B_IO_I2C.c(104): warning:  #223-D: function "VK2C23B_I2C_WRDat" declared implicitly
+        VK2C23B_I2C_WRDat(Addr,Databuf,Cnt);
+..\lcd_driver\VK2C23B_IO_I2C.c(117): warning:  #223-D: function "VK2C23B_I2C_RDDat" declared implicitly
+        VK2C23B_I2C_RDDat(Addr,Databuf,Cnt);
+..\lcd_driver\VK2C23B_IO_I2C.c: 3 warnings, 0 errors
+creating preprocessor file for board.c...
+creating preprocessor file for clk.c...
+creating preprocessor file for timer.c...
+creating preprocessor file for sys.c...
+creating preprocessor file for retarget.c...
+creating preprocessor file for gpio.c...
+creating preprocessor file for pwm.c...
+creating preprocessor file for i2c.c...
+creating preprocessor file for system_M451Series.c...
+linking...
+Program Size: Code=5858 RO-data=394 RW-data=104 ZI-data=2856  
+FromELF: creating hex file...
+After Build - User command #1: fromelf --bin ".\obj\test_lcdic_v10.axf" --output ".\obj\test_lcdic_v10.bin"
+After Build - User command #2: fromelf --text -c ".\obj\test_lcdic_v10.axf" --output ".\obj\test_lcdic_v10.txt"
+".\obj\test_lcdic_v10.axf" - 0 Error(s), 3 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: ARM
+                http://www.keil.com/pack/ARM.CMSIS.4.3.0.pack
+                ARM::CMSIS:CORE:4.1.0
+                CMSIS (Cortex Microcontroller Software Interface Standard)
+   * Component: CORE Version: 4.1.0
+
+<h2>Collection of Component include folders:</h2>
+  D:\工作\A工程资料\LCD\抗干扰系列_VK2C\VK2C例程\VK2C23B_TESTCODE\project\VK2C23B_FUNC\Keil\RTE
+  C:\Keil_v5\ARM\PACK\ARM\CMSIS\4.3.0\CMSIS\Include
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: ARM::CMSIS:CORE:4.1.0
+</pre>
+</body>
+</html>
