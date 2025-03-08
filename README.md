@@ -17,7 +17,8 @@ After the wheel is removed:
     4. Other Side: On the opposite side, you’ll see the PCB, encoders, and screens.
 
 # The Screen
-   The screen is a custom I2C LCD that requires five wires: 3.3V, GND, SDA, SCL, and EDK (which is tied to GND).
+   The screen is a custom I2C LCD that requires five wires: 3.3V, GND, SDA, SCL, and EDK (which is tied to GND). It uses Vinka VK2C23B controller. I have included the datasheet and example code provided by the manufacturer (only in chinese thouh(use google lens))
+   ![LCD](pictures/LCD2.jpg)
 
 # The Encoders
    The encoders incorporate two standard pushbuttons actuated by a lever.
