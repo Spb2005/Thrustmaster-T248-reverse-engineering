@@ -44,7 +44,7 @@ After the wheel is removed:
    7. Encoder Buttons:
         PA6 and PA7 are used for BTN 20–21.
         PA5 and PC6 are used for BTN 22–23.
-   8. Wheel Connector: This connector is wired to 3.3V, GND, PA14, PA3, and PA2 (the latter via a 27.5Ω resistor) as well as NRST (controlled through an N-MOSFET). ![Schematic](pictures/readme/Wheel_Connector.png)
+   8. Wheel Connector: This connector is wired to 3.3V, GND, PA14, PA3 (RX), and PA2 (TX) (the latter via a 27.5Ω resistor) as well as NRST (controlled through an N-MOSFET). ![Schematic](pictures/readme/Wheel_Connector.png)
 
 # The Wheel’s Connection to the Wheelbase
 
