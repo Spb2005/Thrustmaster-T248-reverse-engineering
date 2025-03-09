@@ -10,11 +10,11 @@ Removing the Steering Wheel
 # Disassembling the Wheel
 
 After the wheel is removed:
-    1. Screws: There are 20 large screws and one small screw securing the red band.
+   1. Screws: There are 20 large screws and one small screw securing the red band.
         Note: There is an additional screw hidden beneath the red band on the front.
-    2. Once all screws are removed, the wheel can be disassembled. Be cautious not to strain the cable (which can be detached from the PCB).
-    3. Backside Components: On the backside, you’ll find the magnetic shifters and the cable. If you’ve added a connector to the cable, you can cut the plastic weld around it to remove the cable. If your connector is too large, you might consider using a 6-pin picoblade connector and soldering it to your custom connector.
-    4. Other Side: On the opposite side, you’ll see the PCB, encoders, and screens.
+   2. Once all screws are removed, the wheel can be disassembled. Be cautious not to strain the cable (which can be detached from the PCB).
+   3. Backside Components: On the backside, you’ll find the magnetic shifters and the cable. If you’ve added a connector to the cable, you can cut the plastic weld around it to remove the cable. If your connector is too large, you might consider using a 6-pin picoblade connector and soldering it to your custom connector.
+   4. Other Side: On the opposite side, you’ll see the PCB, encoders, and screens.
 
 # The Screen
    The screen is a custom I2C LCD that requires five wires: 3.3V, GND, SDA, SCL, and EDK (which is tied to GND). It uses Vinka VK2C23B controller. I have included the datasheet and example code provided by the manufacturer (only in chinese thouh(use google lens))
