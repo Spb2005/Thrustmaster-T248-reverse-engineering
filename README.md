@@ -93,7 +93,7 @@ The UART bus handles three main types of data, all transmitted every 250 ms (4 H
 
 Additional communication occurs when the wheel is plugged in and completes its setup routine. Unfortunately, I was unable to capture these messages due to limitations with my logic analyzer’s recording duration and trigger. Note that when the wheel is powered on without the wheelbase connected, the communication differs entirely; I will include the Pulseview capture files for further analysis.
 
-# Unanswered Questtions
+# Open Questions
 1. PA14 Functionality
    -Is my assumption about its purpose correct, or does it have another role?
 2. Startup Sequence Analysis
