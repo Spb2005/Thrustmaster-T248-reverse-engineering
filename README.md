@@ -50,10 +50,10 @@ After the wheel is removed:
 
 Unlike older Thrustmaster wheels (e.g., T300, T150, TMX, T500, etc.) that use SPI—and newer models (e.g., T818) that use CAN-BUS—the T248 and T124 use UART with an even parity bit at 11,520 Baud. The wheel connector has four data pins:
 
-   TX (PA2, Testpad 7)
-   RX (PA3, Testpad 6)
-   Reset (TP9)
-   PA14 (Testpad 8): This pin can also be pulled high via the Mode Button on the wheel. It is likely used by the STM32 to display the correct menu on the screen, while its connection to the wheelbase signals that DPAD button presses should modify the wheel’s settings.
+TX (PA2, Testpad 7)
+RX (PA3, Testpad 6)
+Reset (TP9)
+PA14 (Testpad 8): This pin can also be pulled high via the Mode Button on the wheel. It is likely used by the STM32 to display the correct menu on the screen, while its connection to the wheelbase signals that DPAD button presses should modify the wheel’s settings.
 
 # The Communication Protocol
 
