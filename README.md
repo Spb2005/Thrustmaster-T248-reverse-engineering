@@ -93,6 +93,28 @@ The UART bus handles three main types of data, all transmitted every 250 ms (4 H
 
 Additional communication occurs when the wheel is plugged in and completes its setup routine. Unfortunately, I was unable to capture these messages due to limitations with my logic analyzer’s recording duration and trigger. Note that when the wheel is powered on without the wheelbase connected, the communication differs entirely; I will include the Pulseview capture files for further analysis.
 
+# Unanswered Questtions
+1. PA14 Functionality
+   -Is my assumption about its purpose correct, or does it have another role?
+2. Startup Sequence Analysis
+   -I need help analyzing the protocol during the startup sequence and calibration. My logic analyzer has limitations: it can’t capture long enough sequences, and the trigger functionality isn’t working as needed.
+3. Keep-Alive Messages
+   -Are these truly constant?
+   -Why does the protocol use eight messages in total? Seems a bit excessive.
+4. Button State Messages
+   -Why are two messages used for button states when all the data is only in one?
+   -Why does all messages have a response (like an acknowledgment), but not the buttons states?
+5. Screeen Data
+   -How can I extract the individual information (Speed, RPM, Laptime, etc.)?
+   -Why does the wheel respond with a 12-byte message, and what does it represent? Seems a bit excessive. 
+6. General
+   -Why was a completely new protocol designed for just two wheels (T124 and T248)?
+   -Why is the protocol so complex, with:
+      -Long message formats
+      -Lengthy acknowledgment sequences
+      -Additional unused headroom
+      -Rolling message orders
+
 # Goal
 
 The objective of this project is to emulate a Thrustmaster steering wheel, enabling you to build your own custom wheel. This concept is similar to what Taras demonstrated on his blog (https://rr-m.org/blog/), where he used Arduino code to emulate older Thrustmaster models (T150, TMX, T300, etc.).
