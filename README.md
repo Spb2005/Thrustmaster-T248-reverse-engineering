@@ -95,7 +95,7 @@ Additional communication occurs when the wheel is plugged in and completes its s
 
 # Open Questions
 1. PA14 Functionality
-   -Is my assumption about its purpose correct, or does it have another role?
+   -. Is my assumption about its purpose correct, or does it have another role?
 2. Startup Sequence Analysis
    -I need help analyzing the protocol during the startup sequence and calibration. My logic analyzer has limitations: it can’t capture long enough sequences, and the trigger functionality isn’t working as needed.
 3. Keep-Alive Messages
