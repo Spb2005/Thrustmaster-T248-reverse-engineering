@@ -34,7 +34,7 @@ After the wheel is removed:
 # Interesting Details in the Schematic
    1. Microcontroller Pin Usage: All pins of the STM32 are utilized, although PB3 is only connected to a 100Ω pull-down resistor.
    2. LED: The LED is connected to PB5. ![Schematic](pictures/readme/LED.png)
-   3. Debug Port: On the backside of the PCB, there are pads for a debug port used to program the STM32. These include NRST, SWCLK (PA14), SWDIO (PA13), 3.3V, and GND. ![Schematic](pictures/readme/Debug+Encoder.png)
+   3. Debug Port: On the backside of the PCB, there are pads for a debug port used to program the STM32. These include NRST, SWCLK (PA14), SWDIO (PA13), 3.3V, and GND. I was unable to dump the firmware—either my ST-Link isn’t working correctly, or SWDIO and SWCLK are being   actively used as button inputs, which might require putting the STM32 into a specific debug state to enable access.![Schematic](pictures/readme/Debug+Encoder.png)
    4. Screen Connections:
         The screen’s SCL is connected to PA11 via a 27.5Ω resistor.
         SDA is connected to PA12.
@@ -106,8 +106,11 @@ Additional communication occurs when the wheel is plugged in and completes its s
    -Why does all messages have a response (like an acknowledgment), but not the buttons states?
 5. Screeen Data
    -How can I extract the individual information (Speed, RPM, Laptime, etc.)?
-   -Why does the wheel respond with a 12-byte message, and what does it represent? Seems a bit excessive. 
-6. General
+   -Why does the wheel respond with a 12-byte message, and what does it represent? Seems a bit excessive.
+6. Firmware Dump
+   -Is it possible that SWDIO and SWCLK being used as button inputs prevents access to the debug interface?
+   -Could the STM32 need to be forced into a specific debug mode to allow firmware dumping?
+7. General
    -Why was a completely new protocol designed for just two wheels (T124 and T248)?
    -Why is the protocol so complex, with:
       -Long message formats
