@@ -34,7 +34,7 @@ After the wheel is removed:
 # Interesting Details in the Schematic
    1. Microcontroller Pin Usage: All pins of the STM32 are utilized, although PB3 is only connected to a 100Ω pull-down resistor.
    2. LED: The LED is connected to PB5. ![Schematic](pictures/readme/LED.png)
-   3. Debug Port: On the backside of the PCB, there are pads for a debug port used to program the STM32. These include NRST, SWCLK (PA14), SWDIO (PA13), 3.3V, and GND. I was unable to dump the firmware—either my ST-Link isn’t working correctly, or SWDIO and SWCLK are being   actively used as button inputs, which might require putting the STM32 into a specific debug state to enable access.![Schematic](pictures/readme/Debug+Encoder.png)
+   3. Debug Port: On the backside of the PCB, there are pads for a debug port used to program the STM32. These include NRST, SWCLK (PA14), SWDIO (PA13), 3.3V, and GND. I was unable to dump the firmware—either my ST-Link isn’t working correctly, or SWDIO and SWCLK are being   actively used as button inputs, which might require putting the STM32 into a specific debug state to enable access. More on that in the firmware section![Schematic](pictures/readme/Debug+Encoder.png)
    4. Screen Connections:
         The screen’s SCL is connected to PA11 via a 27.5Ω resistor.
         SDA is connected to PA12.
@@ -44,7 +44,7 @@ After the wheel is removed:
    7. Encoder Buttons:
         PA6 and PA7 are used for BTN 20–21.
         PA5 and PC6 are used for BTN 22–23.
-   8. Wheel Connector: This connector is wired to 3.3V, GND, PA14, PA3 (RX), and PA2 (TX) (the latter via a 27.5Ω resistor) as well as NRST (controlled through an N-MOSFET). ![Schematic](pictures/readme/Wheel_Connector.png)
+   8. Wheel Connector: This connector is wired to 3.3V, GND, PA14, PA3 (RX), and PA2 (TX) (the latter via a 27.5Ω resistor) as well as NRST (controlled through an N-MOSFET).![Schematic](pictures/readme/Wheel_Connector.png)
 
 # The Wheel’s Connection to the Wheelbase
 
@@ -52,7 +52,7 @@ Unlike older Thrustmaster wheels (e.g., T300, T150, TMX, T500, etc.) that use SP
 
 TX (PA2, Testpad 7)
 RX (PA3, Testpad 6)
-Reset (TP9)
+Reset (TP9): Either this pin is used to synchronise the Wheel and the Wheelbase during the startup/calibration sequence, or it is only used for updating the firmware.
 PA14 (Testpad 8): This pin can also be pulled high via the Mode Button on the wheel. It is likely used by the STM32 to display the correct menu on the screen, while its connection to the wheelbase signals that DPAD button presses should modify the wheel’s settings.
 
 # The Communication Protocol
@@ -110,13 +110,15 @@ These files use the .tmf extension, which likely stands for "Thrustmaster Firmwa
 3. Second Section:
    - Data resumes at 0x00037870, occupying about 1/10 of the file, and ends at 0x0003E7D0.
 4. Final Empty Region:
-   -The remainder of the file (approximately 1/14) is empty, extending to 0x0003F870.
+   - The remainder of the file (approximately 1/14) is empty, extending to 0x0003F870.
 
 It’s possible that the first section contains the firmware for the wheelbase, while the second section is for the wheel. However, it’s unclear if the wheel’s firmware is first uploaded to the wheelbase and flashed from there or if the PC program flashes both components individually, with the wheelbase acting in a passthrough mode.
+This process could likely be understood by analyzing the code of the update program from thrustmaster, but I currently lack the knowledge to do so.
 
 # Open Questions
 1. PA14 Functionality
    - Is my assumption about its purpose correct, or does it have another role?
+   - Maybe it isnt used during normal operation, but during flashing the firmware as speculated in the firmware section.
 2. Startup Sequence Analysis
    - I need help analyzing the protocol during the startup sequence and calibration. My logic analyzer has limitations: it can’t capture long enough sequences, and the trigger functionality isn’t working as needed.
 3. Keep-Alive Messages
@@ -131,6 +133,8 @@ It’s possible that the first section contains the firmware for the wheelbase, 
 6. Firmware Dump
    - Is it possible that SWDIO and SWCLK being used as button inputs prevents access to the debug interface?
    - Could the STM32 need to be forced into a specific debug mode to allow firmware dumping?
+   - Is the Wheel also updated, during an firmware update using the PC Program.
+   - Is it possible to extract both firmware parts (Wheelbase and Wheel) from the firmware file found in the Pc Program.
 7. General
    - Why was a completely new protocol designed for just two wheels (T124 and T248)?
    - Why is the protocol so complex, with:
