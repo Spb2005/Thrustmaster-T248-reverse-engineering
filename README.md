@@ -93,6 +93,27 @@ The UART bus handles three main types of data, all transmitted every 250 ms (4 H
 
 Additional communication occurs when the wheel is plugged in and completes its setup routine. Unfortunately, I was unable to capture these messages due to limitations with my logic analyzer’s recording duration and trigger. Note that when the wheel is powered on without the wheelbase connected, the communication differs entirely; I will include the Pulseview capture files for further analysis.
 
+# The Firmware
+
+I was unable to dump the firmware via the SWD interface through the J_Debug footprint. This could be due to an issue with my ST-Link or because the SWCLK pin (PA14) is also used for the Mode button and one pin of the connecting wire to the wheelbase. Similarly, SWDIO (PA13) is shared with Button 9. It might be necessary to place the STM32 in a specific debug mode to enable these pins for programming.
+
+The wheelbase firmware can be updated using a Windows program. However, it’s unclear if this process also updates the wheel’s firmware. If it does, it’s likely achieved via the UART interface, potentially involving the Reset line and possibly PA14 (SWCLK).
+
+I found a firmware file in the program's storage directory:
+C:\Program Files\Guillemot\tmfwupdater\firmware.
+These files use the .tmf extension, which likely stands for "Thrustmaster Firmware." By renaming these files to .bin, they can be opened in ST-Link Utility or other compatible software. Interestingly, the firmware file contains two distinct program sections:
+
+1. First Section:
+   - Approximately 1/3 of the file, starting at the beginning and ending around address 0x00017840.
+2. Empty Gap:
+   - A long unused region spanning from 0x00017840 to 0x00037870 (roughly 1/2 of the file).
+3. Second Section:
+   - Data resumes at 0x00037870, occupying about 1/10 of the file, and ends at 0x0003E7D0.
+4. Final Empty Region:
+   -The remainder of the file (approximately 1/14) is empty, extending to 0x0003F870.
+
+It’s possible that the first section contains the firmware for the wheelbase, while the second section is for the wheel. However, it’s unclear if the wheel’s firmware is first uploaded to the wheelbase and flashed from there or if the PC program flashes both components individually, with the wheelbase acting in a passthrough mode.
+
 # Open Questions
 1. PA14 Functionality
    - Is my assumption about its purpose correct, or does it have another role?
