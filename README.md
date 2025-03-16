@@ -95,28 +95,28 @@ Additional communication occurs when the wheel is plugged in and completes its s
 
 # Open Questions
 1. PA14 Functionality
-- Is my assumption about its purpose correct, or does it have another role?
+   - Is my assumption about its purpose correct, or does it have another role?
 2. Startup Sequence Analysis
-- I need help analyzing the protocol during the startup sequence and calibration. My logic analyzer has limitations: it can’t capture long enough sequences, and the trigger functionality isn’t working as needed.
+   - I need help analyzing the protocol during the startup sequence and calibration. My logic analyzer has limitations: it can’t capture long enough sequences, and the trigger functionality isn’t working as needed.
 3. Keep-Alive Messages
-- Are these truly constant?
-- Why does the protocol use eight messages in total? Seems a bit excessive.
+   - Are these truly constant?
+   - Why does the protocol use eight messages in total? Seems a bit excessive.
 4. Button State Messages
-- Why are two messages used for button states when all the data is only in one?
-- Why does all messages have a response (like an acknowledgment), but not the buttons states?
+   - Why are two messages used for button states when all the data is only in one?
+   - Why does all messages have a response (like an acknowledgment), but not the buttons states?
 5. Screeen Data
-- How can I extract the individual information (Speed, RPM, Laptime, etc.)?
-- Why does the wheel respond with a 12-byte message, and what does it represent? Seems a bit excessive.
+   - How can I extract the individual information (Speed, RPM, Laptime, etc.)?
+   - Why does the wheel respond with a 12-byte message, and what does it represent? Seems a bit excessive.
 6. Firmware Dump
-- Is it possible that SWDIO and SWCLK being used as button inputs prevents access to the debug interface?
-- Could the STM32 need to be forced into a specific debug mode to allow firmware dumping?
+   - Is it possible that SWDIO and SWCLK being used as button inputs prevents access to the debug interface?
+   - Could the STM32 need to be forced into a specific debug mode to allow firmware dumping?
 7. General
-- Why was a completely new protocol designed for just two wheels (T124 and T248)?
-- Why is the protocol so complex, with:
-+ Long message formats
-+ Lengthy acknowledgment sequences
-+ Additional unused headroom
-+ Rolling message orders
+   - Why was a completely new protocol designed for just two wheels (T124 and T248)?
+   - Why is the protocol so complex, with:
+      * Long message formats
+      * Lengthy acknowledgment sequences
+      * Additional unused headroom
+      * Rolling message orders
 
 # Goal
 
