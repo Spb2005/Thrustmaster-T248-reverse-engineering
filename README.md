@@ -10,16 +10,14 @@ Removing the Steering Wheel
 - [Interesting Details in the Schematic](#interesting-details-in-the-schematic)
 - [The Wheel’s Connection to the Wheelbase](#the-wheels-connection-to-the-wheelbase)
 - [The Communication Protocol](#the-communication-protocol)
-  - [Ping/Keep-Alive Message](#pingkeep-alive-message)
-  - [Button States](#button-states)
-  - [Screen Data](#screen-data)
 - [The Wheelbase](#the-wheelbase)
 - [The Firmware](#the-firmware)
 - [Pedal Set](#pedal-set)
 - [Open Questions](#open-questions)
 - [Goal](#goal)
 
-# Removing the steering wheel from the T248 is straightforward:
+# Removing the steering wheel
+Removing the steering wheel from the T248 is straightforward:
 (Note this will void your warranty. Do it at your own risk)
    1. Shaft Screws: There are two screws on the shaft. Once these are removed, the wheel can be pulled off.
    2. Caution: This process requires significant force, so take care not to damage the wheel.
