@@ -1,27 +1,252 @@
 This project involves reverse engineering the Thrustmaster T248 steering wheel with the ultimate goal of enabling custom steering wheel builds.
 Removing the Steering Wheel
 
+## Project Update (December 2025)
+
+Further analysis using an oscilloscope allowed me to observe the full startup sequence
+as well as additional protocol frames that were not visible with a logic analyzer.
+
+Based on these new findings, I was able to implement a fully working **wheel emulator**,
+which allows a **custom-built steering wheel** to operate with the Thrustmaster T248 wheelbase.
+
+All new insights have been **integrated directly into this README**.
+Most protocol-related updates can be found in:
+- **The Communication Protocol**
+- **Wheel Emulator (new section)**
+
 ## Table of Contents
-- [Removing the Steering Wheel](#removing-the-steering-wheel)
+- [Current Project State](#current-project-state)
+- [Wheel Emulator](#wheel-emulator)
+  - [Development Versions (V1.x)](#development-versions-v1x)
+    - [V1.0 – Minimal Emulator](#v10--minimal-emulator)
+    - [V1.1 – Button Control via Serial Console](#v11--button-control-via-serial-console)
+    - [V1.2 – Improved Button Transmission](#v12--improved-button-transmission)
+    - [V1.3 – UART State Machine \& Encoder Decoding](#v13--uart-state-machine--encoder-decoding)
+    - [V1.4 – Hardware Integration Improvements](#v14--hardware-integration-improvements)
+    - [V1.5 – Encoder Hardware \& OLED Display](#v15--encoder-hardware--oled-display)
+    - [V1.6 – Startup Acknowledgment Check](#v16--startup-acknowledgment-check)
+    - [V1.7 – UART Receive Timeout](#v17--uart-receive-timeout)
+    - [V1.8 – Full Button Set](#v18--full-button-set)
+  - [V2.0 – Stable Wheel Emulator](#v20--stable-wheel-emulator)
+  - [Steering\_Wheel\_USB (Legacy)](#steering_wheel_usb-legacy)
 - [Disassembling the Wheel](#disassembling-the-wheel)
-- [The Screen](#the-screen)
-- [The Encoders](#the-encoders)
 - [The PCB](#the-pcb)
 - [Interesting Details in the Schematic](#interesting-details-in-the-schematic)
 - [The Wheel’s Connection to the Wheelbase](#the-wheels-connection-to-the-wheelbase)
 - [The Communication Protocol](#the-communication-protocol)
+    - [Overview](#overview)
+    - [Keep-Alive Messages](#keep-alive-messages)
+    - [Button State Messages](#button-state-messages)
+    - [General Data Frames](#general-data-frames)
+      - [Encoder Data Analysis](#encoder-data-analysis)
+    - [Startup Sequence (NEW)](#startup-sequence-new)
+    - [Shutdown Sequence (NEW)](#shutdown-sequence-new)
+    - [Screen Data](#screen-data)
 - [The Wheelbase](#the-wheelbase)
+- [The Screen](#the-screen)
+- [The Encoders](#the-encoders)
 - [The Firmware](#the-firmware)
 - [Pedal Set](#pedal-set)
-- [Open Questions](#open-questions)
+- [Research Status](#research-status)
+  - [Resolved Questions](#resolved-questions)
+    - [Startup Sequence Analysis](#startup-sequence-analysis)
+    - [Keep-Alive Messages](#keep-alive-messages-1)
+    - [Button State Messages](#button-state-messages-1)
+    - [General Data Frames (F3)](#general-data-frames-f3)
+  - [Open Questions](#open-questions)
+    - [PA14 Functionality](#pa14-functionality)
+    - [Screen Data Decoding](#screen-data-decoding)
+    - [Firmware Dump \& Update Process](#firmware-dump--update-process)
+    - [Protocol Design Decisions](#protocol-design-decisions)
 - [Goal](#goal)
 
-# Removing the steering wheel
-Removing the steering wheel from the T248 is straightforward:
-(Note this will void your warranty. Do it at your own risk)
-   1. Shaft Screws: There are two screws on the shaft. Once these are removed, the wheel can be pulled off.
-   2. Caution: This process requires significant force, so take care not to damage the wheel.
-   3. Cable: After removal, you'll notice a non-detachable cable connecting the wheel to the wheelbase. I cut this cable and replaced it with a 5-pin DIN connector (using the    shield for ground, since the original cable has 6 wires).
+# Current Project State
+
+- The T248 wheel communication protocol is largely understood.
+- A fully working wheel emulator has been implemented on RP2040 (without screen data like rpm, gear, lap-time, etc).
+- Custom steering wheels can now be used with a stock T248 wheelbase.
+- Remaining unknowns are mostly related to display decoding and firmware updates.
+
+
+# Wheel Emulator
+The wheel emulator is implemented using the **Arduino IDE** on a **Raspberry Pi Pico (RP2040)**.
+
+The development process was intentionally iterative:
+- **V1.x** versions were used to incrementally reverse engineer and validate
+  individual protocol features.
+- **V2.0** is the first **fully functional wheel emulator**.
+- 
+Earlier in the project, a separate **USB-only custom wheel implementation**
+was also created for comparison and testing.
+
+---
+
+## Development Versions (V1.x)
+
+### V1.0 – Minimal Emulator
+
+Implements:
+- Startup sequence
+- Periodic keep-alive messages
+- Button state messages
+
+This version prevents the wheelbase from continuously generating
+phantom **DPAD-Up** inputs when no wheel is connected.
+
+**Hardware notes:**
+- UART RX/TX must be connected to the wheelbase
+- Wheelbase 3.3 V is connected to GPIO 11 as an enable signal  
+  (external pull-down resistor required)
+- The Pico must be powered **before** the wheelbase
+- The Pico must be connected to a separate USB port for power
+
+---
+
+### V1.1 – Button Control via Serial Console
+
+Adds interactive button control via the USB serial console.
+
+**Commands:**
+- `'1'–'10'`, `'13'`, `'22'`, `'23'` → normal buttons
+- `'dr'`, `'du'`, `'dl'`, `'dd'` → DPAD directions
+- `'elu'`, `'eld'`, `'eru'`, `'erd'` → encoder directions  
+  (example: `elu` = encoder left up)
+- `'display'` → display button
+- `'mode'` → mode button
+
+⚠️ **Warning:**  
+Using the *Display* and *Mode* buttons can modify wheel settings
+without visual feedback. Use with caution.
+
+At this stage, buttons were toggled.
+This caused encoder-related inputs (`eru`, `erd`) to appear as
+periodic pulses in Windows after some time.
+
+---
+
+
+### V1.2 – Improved Button Transmission
+
+Introduces:
+- `void sendButtons(bool full)` function
+
+Behavior:
+- `full = true` → sends both B0 and B1 frames
+- `full = false` → sends only B0
+
+Additionally, the B0 frame is transmitted immediately after a serial command.
+
+---
+
+### V1.3 – UART State Machine & Encoder Decoding
+
+Implements:
+- UART receive state machine to parse multiple frame types
+- Buttons are now **momentary presses (100 ms)** instead of toggles
+- Screen data is forwarded to the serial console for debugging
+- Encoder data decoding based on selected bits from the **F3 frame**
+
+---
+
+### V1.4 – Hardware Integration Improvements
+
+Changes:
+- Switched from `uart1 (Serial2)` to `uart0 (Serial1)`
+  to match an existing USB steering wheel design
+- Wheelbase reset line is now used to control Pico startup
+
+**Reset signal inversion:**
+- Wheelbase RESET is **active high**
+- Pico RUN pin is **active low**
+
+Implemented using a **BC548B NPN transistor**:
+- Collector → Pico RUN
+- Emitter → GND
+- Base → wheelbase RESET via 10 kΩ resistor
+
+Additionally:
+- Implemented responses to screen data frames  
+  (no observable effect on wheelbase behavior)
+
+---
+
+### V1.5 – Encoder Hardware & OLED Display
+
+Adds:
+- Physical rotary encoder as encoder input
+- 32×128 OLED display to show current encoder layer
+
+Encoder layers renamed to:
+- TC
+- ABS
+- BB
+- ECU
+
+(The *Display EXP* encoder position is not used.)
+
+**Required libraries:**
+- Adafruit SSD1306
+- RPI_PICO_TimerInterrupt (khoih-prog)
+- Rotary (buxtronix)
+
+---
+
+### V1.6 – Startup Acknowledgment Check
+
+Adds:
+- Validation of the wheelbase acknowledgment after startup
+- If not received, the Pico reboots
+
+(Note: likely redundant, as the wheelbase usually requires a reboot as well.)
+
+---
+
+### V1.7 – UART Receive Timeout
+
+Implements:
+- Timeout-based reset of the UART receive state machine
+- Prevents lock-ups caused by incomplete or corrupted frames
+
+---
+
+### V1.8 – Full Button Set
+
+Adds support for:
+- Buttons 1–10, 13, 22, 23
+- Full DPAD support
+
+Details:
+- Buttons 1 and 2 use **interrupts** (preferred for shift paddles)
+- I²C pins changed to **GPIO 8 and 9**
+
+---
+
+## V2.0 – Stable Wheel Emulator
+
+Finalized version with:
+- Shortened interrupt service routines
+- Fixed multiple potential race conditions and edge cases
+- Added preprocessor flag `DEBUG`
+  - Allows all debug output and serial commands to be disabled
+
+This version is considered the **first working emulator**
+and is suitable for use with a custom-built steering wheel.
+
+---
+
+## Steering_Wheel_USB (Legacy)
+
+USB-only custom steering wheel implementation.
+
+Characteristics:
+- Based on V1.8 logic
+- Enumerates as a USB gamepad using the **Joystick** library
+
+Known limitations:
+- Long interrupt service routines
+- Not as optimized as V2.0
+
+Despite these drawbacks, it worked reliably for multiple month.
 
 # Disassembling the Wheel
 After the wheel is removed:
@@ -30,14 +255,6 @@ After the wheel is removed:
    2. Once all screws are removed, the wheel can be disassembled. Be cautious not to strain the cable (which can be detached from the PCB).
    3. Backside Components: On the backside, you’ll find the magnetic shifters and the cable. If you’ve added a connector to the cable, you can cut the plastic weld around it to remove the cable. If your connector is too large, you might consider using a 6-pin picoblade connector and soldering it to your custom connector.
    4. Other Side: On the opposite side, you’ll see the PCB, encoders, and screens.
-
-# The Screen
-   The screen is a custom I2C LCD that requires five wires: 3.3V, GND, SDA, SCL, and EDK (which is tied to GND). It uses Vinka VK2C23B controller. I have included the datasheet and example code provided by the manufacturer (only in chinese thouh(use google lens))
-   ![LCD](pictures/LCD2.jpg)
-
-# The Encoders
-   The encoders incorporate two standard pushbuttons actuated by a lever.
-   You can adjust the tactile feedback of the encoders by tightening the large screw on the back.
 
 # The PCB
    The steering wheel uses rubber dome switches combined with an STM32G030K6 microcontroller to handle button presses and control the screen.
@@ -68,51 +285,166 @@ Unlike older Thrustmaster wheels (e.g., T300, T150, TMX, T500, etc.) that use SP
 TX (PA2, Testpad 7)
 RX (PA3, Testpad 6)
 Reset (TP9): Either this pin is used to synchronise the Wheel and the Wheelbase during the startup/calibration sequence, or it is only used for updating the firmware.
-PA14 (Testpad 8): This pin can also be pulled high via the Mode Button on the wheel. It is likely used by the STM32 to display the correct menu on the screen, while its connection to the wheelbase signals that DPAD button presses should modify the wheel’s settings.
+PA14 (Testpad 8): This pin can also be pulled high via the Mode Button on the wheel. It is likely used as an normal GPIO for the mode button and during the updating process.
 
 # The Communication Protocol
 
-The UART bus handles three main types of data, all transmitted every 250 ms (4 Hz), although they are not synchronized:
+### Overview
+The UART bus handles several message types exchanged between wheel and wheelbase.
+Most messages are sent at a base rate of **4 Hz (every 250 ms)** unless otherwise noted.
 
-   1. Ping/Keep-Alive Message (Function Uncertain)
-        The wheelbase sends four 4-byte messages, and the wheel responds in between.
-        The messages are:
-        D0 00 00 00, D1 00 FF 01, D2 00 00 00, D3 00 00 00.
-        These bytes rotate in order; for example, the sequence starts as D0 D1 D2 D3, then after 250 ms becomes D1 D2 D3 D0, and so on.
-        The wheel always responds with:
-        F0 00 00 00.
+UART configuration:
+- Baud rate: 115200
+- Format: 8E1 (even parity)
+
+### Keep-Alive Messages
+
+The wheelbase cyclically sends four different 4-byte frames in sequence:
+
+- D0 00 00 00
+- D1 00 FF 01
+- D2 00 00 00
+- D3 00 00 00
+
+The Order of the frames change every 250 ms (e.g. start with D0 → D1 → D2 → D3, next message D3 → D0 → D1 → D2).
+
+The wheel must respond to **each frame** with:
+- F0 00 00 00
+
+⚠️ **Timing requirement:**  
+Each keep-alive frame has a timeout of approximately **5 ms**.
+
 ![Data](pictures/readme/Keep_Alive_1.png)
 ![Data](pictures/readme/Keep_Alive_2.png)
 
-   3. Button States
-        The wheel sends button state messages without waiting for a response from the wheelbase.
-        These consist of two alternating 4-byte messages:
-        B0 00 00 00 and B1 00 00 00.
-        The B1 message appears static, while the B0 message uses its last three bytes to represent the state of various buttons:
-            The bits indicate the status for:
-                First set: DPAD-Right, Display, Mode, Encoder-Left Up, Encoder-Left Down, Encoder-Right Up, Encoder-Right Down
-                Second set: BTN 9, BTN 10, BTN 22, BTN 23, BTN 13, DPAD-Up, DPAD-Down, DPAD-Left
-                Third set: BTN 1, BTN 2, BTN 3, BTN 4, BTN 5, BTN 6, BTN 7, BTN 8
+### Button State Messages
+
+The wheel transmits button states without waiting for an acknowledgment.
+
+Two alternating frames are used:
+- B0 xx xx xx  → contains button data
+- B1 00 00 00 → static placeholder
+
+Only the **B0 frame** is evaluated by the wheelbase.
+The button states are encoded in the **B0** frame as follows:
+
+- **Second byte:**  
+  DPAD-Right, Display, Mode, Encoder-Left Up, Encoder-Left Down,  
+  Encoder-Right Up, Encoder-Right Down, unused (always 0)
+
+- **Third byte:**  
+  BTN 9, BTN 10, BTN 22, BTN 23, BTN 13,  
+  DPAD-Up, DPAD-Down, DPAD-Left
+
+- **Fourth byte:**  
+  BTN 1, BTN 2, BTN 3, BTN 4,  
+  BTN 5, BTN 6, BTN 7, BTN 8
 ![Data](pictures/readme/Button_Data.png)
 
-   4. Screen Data
-        The screen data consists of 9 bytes sent from the wheelbase:
-            The first byte is a constant (42).
-            The second byte is a counter that increments with each display message (e.g., 01, then 02 after 250 ms, etc.).
-            The following 7 bytes are data.
-        The wheel responds with 12 bytes that appear to be static, though their purpose remains unclear. For example, the response might be:
-        47 0C 2A 02 01 00 80 00 00 00 00 00.
-        It is possible that all bytes except the first are used for selecting the displayed data.
+
+### General Data Frames
+
+In addition to the known message types, the wheelbase sends a general-purpose data frame
+used for multiple functions.
+
+Frame length: **18 bytes**  
+Example:
+F3 0E 00 05 45 20 31 20 2B A0 86 01 00 00 00 00 00
+
+Observations:
+- Byte 0–1: static
+- Byte 5: message subtype
+  - 0x45 → Encoder-related data
+  - 0x20 → Default / idle state
+
+This frame is sent:
+- periodically in idle mode (non-encoder data)
+- immediately after encoder interaction (encoder data)
+
+#### Encoder Data Analysis
+
+The encoder-specific variant of this frame was analyzed in detail
+(using the provided Excel analysis file: [Encoder_analysis.xlsx](Encoder_data_analysis/Encoder_analysis.xlsx)).
+
+Decoded fields:
+- **Byte 7:** bits 0–2 encode the current encoder layer
+- **Byte 9:** identifies the pressed encoder button (EX+, EX-, EXP)
+- **Byte 10–11:** encode the encoder action:
+  - no action / reset
+  - layer switch
+  - encoder button press
+
+The emulator decodes these actions by evaluating selected bit combinations.
+
+![EncoderData](pictures/readme/Encoder_data.png)
+
+### Startup Sequence (NEW)
+
+1. After power-up, the wheelbase pulls the **RESET line high for ~400 ms**,
+   resetting the wheel’s STM32.
+2. ~100 ms later, the wheelbase starts sending keep-alive frames.
+   At this stage, the wheel does **not** respond.
+3. After another ~100 ms, the wheel finishes booting and sends a static
+   “hello” frame **twice**:
+
+   F4 02 00 02 AA E1 FF DE
+
+4. The wheelbase responds to each with:
+   F0 00 00 00
+5. Normal operation begins:
+   - 4 Hz button messages
+   - keep-alive frames
+   - screen data (if supported by the game)
+
+![StartupSequence](pictures/readme/Startup_Sequence_1.png)
+
+!["Hello"Frame](pictures/readme/Startup_Sequence_2.png)
+
+
+### Shutdown Sequence (NEW)
+
+When the wheelbase is disconnected from the PC, it sends the following frame twice:
+
+FD 01 00 00
+
+The wheel does not respond.
+
+### Screen Data
+
+The screen data consists of variable-length frames sent from the wheelbase.
+
+Frame structure:
+- **Byte 0:** constant (0x2A / 42)
+- **Byte 1:** counter (increments every frame)
+- **Byte 2:** frame length
+- **Remaining bytes:** payload data
+
+The wheel responds with a static 12-byte frame, e.g.:
+
+47 0C 2A 02 01 00 80 00 00 00 00 00
+
+The purpose of this response is currently unclear.
+It appears that all bytes except the first may influence the displayed content.
+
+Screen data is only transmitted when a game is running that supports the T248 display.
 ![Data](pictures/readme/Display_Data.png)
 ![Data](pictures/readme/Display_Answer.png)
 
-Additional communication occurs when the wheel is plugged in and completes its setup routine. Unfortunately, I was unable to capture these messages due to limitations with my logic analyzer’s recording duration and trigger. Note that when the wheel is powered on without the wheelbase connected, the communication differs entirely; I will include the Pulseview capture files for further analysis.
+Note that when the wheel is powered on without the wheelbase connected, the communication differs entirely; I will include the Pulseview capture files for further analysis.
 
 # The Wheelbase
 
 The Wheelbase is equipped with an STM32L412CB microcontroller featuring 128KB of Flash memory. I haven’t personally disassembled the wheelbase, but I found these two excellent videos for reference:  
 - [Watch here](https://www.youtube.com/watch?v=H18vVQpp1Oo)  
 - [Watch here](https://www.youtube.com/watch?v=9dmCC8PAo2E)  
+
+# The Screen
+   The screen is a custom I2C LCD that requires five wires: 3.3V, GND, SDA, SCL, and EDK (which is tied to GND). It uses Vinka VK2C23B controller. I have included the datasheet and example code provided by the manufacturer (only in chinese thouh(use google lens))
+   ![LCD](pictures/LCD2.jpg)
+
+# The Encoders
+   The encoders incorporate two standard pushbuttons actuated by a lever.
+   You can adjust the tactile feedback of the encoders by tightening the large screw on the back.
 
 # The Firmware
 
@@ -146,40 +478,61 @@ This process could likely be understood by analyzing the code of the update prog
 # Pedal Set
 The T248 comes with the T3PM pedal set, which is the successor to the T3PA. While the T3PA uses potentiometers, the T3PM features Hall effect sensors. All older, non-load cell pedal sets (T3PA, T3PM, T2PA, T2PM) use an analog 0–3.3V signal transmitted through an RJ12 port. ![Data](T3PM-Pedals/20250127_131942.jpg)
 
-# Open Questions
-1. PA14 Functionality
-   - Is my assumption about its purpose correct, or does it have another role?
-   - Maybe it isnt used during normal operation, but during flashing the firmware as speculated in the firmware section.
-2. Startup Sequence Analysis
-   - I need help analyzing the protocol during the startup sequence and calibration. My logic analyzer has limitations: it can’t capture long enough sequences, and the trigger functionality isn’t working as needed.
-3. Keep-Alive Messages
-   - Are these truly constant?
-   - Why does the protocol use eight messages in total? Seems a bit excessive.
-4. Button State Messages
-   - Why are two messages used for button states when all the data is only in one?
-   - Why does all messages have a response (like an acknowledgment), but not the buttons states?
-5. Screeen Data
-   - How can I extract the individual information (Speed, RPM, Laptime, etc.)?
-   - Why does the wheel respond with a 12-byte message, and what does it represent? Seems a bit excessive.
-6. Firmware Dump
-   - Is it possible that SWDIO and SWCLK being used as button inputs prevents access to the debug interface?
-   - Could the STM32 need to be forced into a specific debug mode to allow firmware dumping?
-   - Is the Wheel also updated, during an firmware update using the PC Program.
-   - Is it possible to extract both firmware parts (Wheelbase and Wheel) from the firmware file found in the Pc Program.
-7. General
-   - Why was a completely new protocol designed for just two wheels (T124 and T248)?
-   - Why is the protocol so complex, with:
-      * Long message formats
-      * Lengthy acknowledgment sequences
-      * Additional unused headroom
-      * Rolling message orders
+# Research Status
+
+## Resolved Questions
+
+### Startup Sequence Analysis
+- The complete startup and handshake sequence has been captured using an oscilloscope.
+- Logic analyzer limitations were bypassed by triggering on the RESET line.
+- The wheel sends a static “hello” frame twice after boot, which must be acknowledged
+  before normal operation begins.
+
+### Keep-Alive Messages
+- The keep-alive frames are constant.
+- Four different frames are sent cyclically at 4 Hz.
+- Each frame requires a response within ~5 ms, otherwise communication is reset.
+
+### Button State Messages
+- Only the B0 frame contains valid button data.
+- B1 acts as a placeholder and is not evaluated.
+- Button messages do **not** require acknowledgments.
+- Button state frames are sent periodically and immediately on state changes.
+- Button Frames B0 and B1 dont need to alternate in order.
+
+### General Data Frames (F3)
+- F3 frames serve as a multi-purpose container.
+- Subtypes are identified via byte 5.
+- Encoder-related data is transmitted using specific bit fields within this frame.
+
+## Open Questions
+
+### PA14 Functionality
+- PA14 appears to be used during firmware flashing.
+- Its exact role (BOOT configuration vs. SWD-related function) is still unclear.
+
+### Screen Data Decoding
+- How can individual telemetry values (speed, RPM, lap time, etc.) be extracted?
+- What is the purpose of the 12-byte response sent by the wheel?
+  Most bytes appear static and may act as a generic acknowledgment.
+
+### Firmware Dump & Update Process
+- Is the wheel MCU also updated during a firmware update via the PC software?
+- Is it possible to extract both wheelbase and wheel firmware images
+  from the PC update package?
+
+### Protocol Design Decisions
+- Why was a completely new protocol designed for only two wheel models (T124, T248)?
+- Why is the protocol comparatively complex, featuring:
+  - Long message formats
+  - Acknowledgment-heavy communication
+  - Unused headroom in frames
+  - Rolling message orders
 
 # Goal
 
 The objective of this project is to emulate a Thrustmaster steering wheel, enabling you to build your own custom wheel. This concept is similar to what Taras demonstrated on his blog (https://rr-m.org/blog/), where he used Arduino code to emulate older Thrustmaster models (T150, TMX, T300, etc.).
 
 I contacted Taras for assistance with identifying the communication protocol (SPI, UART, etc.), and he provided some guidance. However, that was during the early stages of the reverse engineering process, and I have not followed up since.
-
-Maybe someone can help me reverse engineer the protocoll or has another idea.
 
 Most things will probably be similar in the t124 wheel

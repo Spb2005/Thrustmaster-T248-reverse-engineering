@@ -1,0 +1,467 @@
+[A0]
+name=A0
+enabled=false
+color=4291076096
+conversion_type=0
+conv_options=0
+
+[A1]
+name=A1
+enabled=false
+color=4287045754
+conversion_type=0
+conv_options=0
+
+[A2]
+name=A2
+enabled=false
+color=4280306311
+conversion_type=0
+conv_options=0
+
+[D2]
+name=RX
+enabled=true
+color=4279638298
+conversion_type=0
+conv_options=0
+
+[D3]
+name=TX
+enabled=true
+color=4287582722
+conversion_type=0
+conv_options=0
+
+[D4]
+name=D4
+enabled=false
+color=4291559424
+conversion_type=0
+conv_options=0
+
+[D5]
+name=D5
+enabled=false
+color=4294277376
+conversion_type=0
+conv_options=0
+
+[D6]
+name=D6
+enabled=false
+color=4293776384
+conversion_type=0
+conv_options=0
+
+[D7]
+name=D7
+enabled=false
+color=4285780502
+conversion_type=0
+conv_options=0
+
+[D8]
+name=D8
+enabled=false
+color=4281623972
+conversion_type=0
+conv_options=0
+
+[D9]
+name=D9
+enabled=false
+color=4285878395
+conversion_type=0
+conv_options=0
+
+[D10]
+name=D10
+enabled=false
+color=4287138437
+conversion_type=0
+conv_options=0
+
+[D11]
+name=D11
+enabled=false
+color=4293848812
+conversion_type=0
+conv_options=0
+
+[D12]
+name=D12
+enabled=false
+color=4279638298
+conversion_type=0
+conv_options=0
+
+[D13]
+name=D13
+enabled=false
+color=4287582722
+conversion_type=0
+conv_options=0
+
+[D14]
+name=D14
+enabled=false
+color=4291559424
+conversion_type=0
+conv_options=0
+
+[D15]
+name=D15
+enabled=false
+color=4294277376
+conversion_type=0
+conv_options=0
+
+[D16]
+name=D16
+enabled=false
+color=4293776384
+conversion_type=0
+conv_options=0
+
+[D17]
+name=D17
+enabled=false
+color=4285780502
+conversion_type=0
+conv_options=0
+
+[D18]
+name=D18
+enabled=false
+color=4281623972
+conversion_type=0
+conv_options=0
+
+[D19]
+name=D19
+enabled=false
+color=4285878395
+conversion_type=0
+conv_options=0
+
+[D20]
+name=D20
+enabled=false
+color=4287138437
+conversion_type=0
+conv_options=0
+
+[D21]
+name=D21
+enabled=false
+color=4293848812
+conversion_type=0
+conv_options=0
+
+[D22]
+name=D22
+enabled=false
+color=4279638298
+conversion_type=0
+conv_options=0
+
+[General]
+decode_signals=1
+generated_signals=0
+views=1
+meta_objs=33
+
+[decode_signal0]
+name=UART
+enabled=true
+color=4281510450
+conversion_type=0
+conv_options=0
+decoders=1
+decoder0\id=uart
+decoder0\visible=true
+decoder0\options=1
+decoder0\option0\name=parity
+decoder0\row0\visible=true
+decoder0\option0\value=@ByteArray(even\0)
+decoder0\row1\visible=true
+decoder0\option0\type=s
+decoder0\row2\visible=true
+decoder0\row3\visible=true
+decoder0\row4\visible=true
+decoder0\row5\visible=true
+decoder0\row6\visible=true
+decoder0\row7\visible=true
+decoder0\row8\visible=true
+decoder0\row9\visible=true
+decoder0\ann_class0\visible=true
+decoder0\ann_class1\visible=true
+decoder0\ann_class2\visible=true
+decoder0\ann_class3\visible=true
+decoder0\ann_class4\visible=true
+decoder0\ann_class5\visible=true
+decoder0\ann_class6\visible=true
+decoder0\ann_class7\visible=true
+decoder0\ann_class8\visible=true
+decoder0\ann_class9\visible=true
+decoder0\ann_class10\visible=true
+decoder0\ann_class11\visible=true
+decoder0\ann_class12\visible=true
+decoder0\ann_class13\visible=true
+decoder0\ann_class14\visible=true
+decoder0\ann_class15\visible=true
+decoder0\ann_class16\visible=true
+decoder0\ann_class17\visible=true
+channels=2
+channel0\name=RX
+channel0\initial_pin_state=2
+channel0\assigned_signal_name=RX
+channel1\name=TX
+channel1\initial_pin_state=2
+channel1\assigned_signal_name=TX
+
+[view0]
+scale=3.186156995315363e-5
+v_offset=-151
+splitter_state=@ByteArray(\0\0\0\xff\0\0\0\x1\0\0\0\x2\0\0\0?\0\0\x5\x99\x1\0\0\0\x1\x1\0\0\0\x1\0)
+segment_display_mode=1
+offset=22 serialization::archive 19 0 0 0 0 14 61311360 39292708 80598425 67715660 66440235 0 0 0 6
+zero_offset=22 serialization::archive 19 0 0 0 0 0 0 0 0 0 0 0 0 0 6
+A0\autoranging=1
+A0\display_type=0
+A0\div_height=39
+A0\neg_vdivs=1
+A0\pos_vdivs=1
+A0\scale_index=4
+A1\autoranging=1
+A1\display_type=0
+A1\div_height=39
+A1\neg_vdivs=1
+A1\pos_vdivs=1
+A1\scale_index=4
+A2\autoranging=1
+A2\display_type=0
+A2\div_height=39
+A2\neg_vdivs=1
+A2\pos_vdivs=1
+A2\scale_index=4
+D2\trace_height=26
+D3\trace_height=26
+D4\trace_height=26
+D5\trace_height=26
+D6\trace_height=26
+D7\trace_height=26
+D8\trace_height=26
+D9\trace_height=26
+D10\trace_height=26
+D11\trace_height=26
+D12\trace_height=26
+D13\trace_height=26
+D14\trace_height=26
+D15\trace_height=26
+D16\trace_height=26
+D17\trace_height=26
+D18\trace_height=26
+D19\trace_height=26
+D20\trace_height=26
+D21\trace_height=26
+D22\trace_height=26
+
+[meta_obj0]
+type=time_marker
+assoc_view=0
+time=22 serialization::archive 19 0 0 0 0 1 87722919 25633253 12971023 75634491 21664168 0 0 0 6
+text=-12761 ms
+
+[meta_obj1]
+type=time_marker
+assoc_view=0
+time=22 serialization::archive 19 0 0 0 0 2 2145883 97914026 36869948 55004471 37452200 0 0 0 6
+text=-12616 ms
+
+[meta_obj2]
+type=time_marker
+assoc_view=0
+time=22 serialization::archive 19 0 0 0 0 2 70311584 19229313 92047351 56215693 17884325 0 0 0 6
+text=-11935 ms
+
+[meta_obj3]
+type=time_marker
+assoc_view=0
+time=22 serialization::archive 19 0 0 0 0 2 88794162 59554216 9062349 91243045 9349061 0 0 0 6
+text=-11750 ms
+
+[meta_obj4]
+type=time_marker
+assoc_view=0
+time=22 serialization::archive 19 0 0 0 0 3 63335200 82078496 6598135 2438909 93826215 0 0 0 6
+text=-11004 ms
+
+[meta_obj5]
+type=time_marker
+assoc_view=0
+time=22 serialization::archive 19 0 0 0 0 3 75885720 44670447 83551835 45736052 4805453 0 0 0 6
+text=-10879 ms
+
+[meta_obj6]
+type=time_marker
+assoc_view=0
+time=22 serialization::archive 19 0 0 0 0 3 75957082 52062626 47252940 93700799 17568438 0 0 0 6
+text=-10878 ms
+
+[meta_obj7]
+type=time_marker
+assoc_view=0
+time=22 serialization::archive 19 0 0 0 0 4 35476600 83766264 30191649 14995778 20738246 0 0 0 6
+text=-10283 ms
+
+[meta_obj8]
+type=time_marker
+assoc_view=0
+time=22 serialization::archive 19 0 0 0 0 4 45554853 46684416 78627641 15982528 95156065 0 0 0 6
+text=-10182 ms
+
+[meta_obj9]
+type=time_marker
+assoc_view=0
+time=22 serialization::archive 19 0 0 0 0 5 47899843 75404571 79870502 5544932 11977221 0 0 0 6
+text=-9159 ms
+
+[meta_obj10]
+type=time_marker
+assoc_view=0
+time=22 serialization::archive 19 0 0 0 0 5 59129284 90847478 57499383 88018794 81698639 0 0 0 6
+text=-9047 ms
+
+[meta_obj11]
+type=time_marker
+assoc_view=0
+time=22 serialization::archive 19 0 0 0 0 6 17740064 70227598 41069066 85262166 92143694 0 0 0 6
+text=-8460 ms
+
+[meta_obj12]
+type=time_marker
+assoc_view=0
+time=22 serialization::archive 19 0 0 0 0 6 31044975 37576299 81244581 49497132 98478703 0 0 0 6
+text=-8327 ms
+
+[meta_obj13]
+type=time_marker
+assoc_view=0
+time=22 serialization::archive 19 0 0 0 0 7 6605355 31473968 29226198 33025095 36381995 0 0 0 6
+text=-7572 ms
+
+[meta_obj14]
+type=time_marker
+assoc_view=0
+time=22 serialization::archive 19 0 0 0 0 7 20853660 14232259 57253646 72886615 20719874 0 0 0 6
+text=-7429 ms
+
+[meta_obj15]
+type=time_marker
+assoc_view=0
+time=22 serialization::archive 19 0 0 0 0 7 89604706 66539590 19562423 3617726 93436889 0 0 0 6
+text=-6742 ms
+
+[meta_obj16]
+type=time_marker
+assoc_view=0
+time=22 serialization::archive 19 0 0 0 0 8 1644484 74728015 57967360 30695333 76813459 0 0 0 6
+text=-6621 ms
+
+[meta_obj17]
+type=time_marker
+assoc_view=0
+time=22 serialization::archive 19 0 0 0 0 9 17689926 61063623 3422322 99131736 36930757 0 0 0 6
+text=-5461 ms
+
+[meta_obj18]
+type=time_marker
+assoc_view=0
+time=22 serialization::archive 19 0 0 0 0 9 32273230 88874821 26294569 76699318 75097520 0 0 0 6
+text=-5315 ms
+
+[meta_obj19]
+type=time_marker
+assoc_view=0
+time=22 serialization::archive 19 0 0 0 0 9 72717115 99035214 30405951 5572996 51166092 0 0 0 6
+text=-4911 ms
+
+[meta_obj20]
+type=time_marker
+assoc_view=0
+time=22 serialization::archive 19 0 0 0 0 9 86702099 99999993 75518200 39516314 86415863 0 0 0 6
+text=-4771 ms
+
+[meta_obj21]
+type=time_marker
+assoc_view=0
+time=22 serialization::archive 19 0 0 0 0 10 53846504 35945970 31154130 51266251 96174134 0 0 0 6
+text=-4099 ms
+
+[meta_obj22]
+type=time_marker
+assoc_view=0
+time=22 serialization::archive 19 0 0 0 0 10 64850376 25006835 41760759 52208983 90173099 0 0 0 6
+text=-3989 ms
+
+[meta_obj23]
+type=time_marker
+assoc_view=0
+time=22 serialization::archive 19 0 0 0 0 11 18782927 98342820 83525463 87017274 15166387 0 0 0 6
+text=-3450 ms
+
+[meta_obj24]
+type=time_marker
+assoc_view=0
+time=22 serialization::archive 19 0 0 0 0 11 32045180 95866954 49573397 45372122 77757067 0 0 0 6
+text=-3317 ms
+
+[meta_obj25]
+type=time_marker
+assoc_view=0
+time=22 serialization::archive 19 0 0 0 0 12 39152522 192251 32276303 61251857 63005654 0 0 0 6
+text=-2246 ms
+
+[meta_obj26]
+type=time_marker
+assoc_view=0
+time=22 serialization::archive 19 0 0 0 0 12 51112113 78971342 4299463 99082459 5529089 0 0 0 6
+text=-2127 ms
+
+[meta_obj27]
+type=time_marker
+assoc_view=0
+time=22 serialization::archive 19 0 0 0 0 12 96556899 87365099 28018792 86031466 27962227 0 0 0 6
+text=-1672 ms
+
+[meta_obj28]
+type=time_marker
+assoc_view=0
+time=22 serialization::archive 19 0 0 0 0 13 9106202 62278031 54069175 51667115 38817836 0 0 0 6
+text=-1547 ms
+
+[meta_obj29]
+type=time_marker
+assoc_view=0
+time=22 serialization::archive 19 0 0 0 0 13 77373970 54967244 80774181 3550928 57778425 0 0 0 6
+text=-864 ms
+
+[meta_obj30]
+type=time_marker
+assoc_view=0
+time=22 serialization::archive 19 0 0 0 0 13 89238575 16103350 24682268 95680775 22729613 0 0 0 6
+text=-745 ms
+
+[meta_obj31]
+type=time_marker
+assoc_view=0
+time=22 serialization::archive 19 0 0 0 0 14 50946817 6843228 41597609 59015331 94740643 0 0 0 6
+text=-128 ms
+
+[meta_obj32]
+type=time_marker
+assoc_view=0
+time=22 serialization::archive 19 0 0 0 0 14 63783035 88644659 50614702 87228689 53346843 0 0 0 6
+text=ELU1R
