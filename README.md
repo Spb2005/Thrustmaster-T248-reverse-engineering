@@ -4,13 +4,13 @@ Removing the Steering Wheel
 ## Project Update (December 2025)
 
 Further analysis using an oscilloscope allowed me to observe the full startup sequence
-as well as additional protocol frames that were not visible with a logic analyzer.
+as well as additional protocol frames that i wasnt able to capture with my logic analyzer.
 
 Based on these new findings, I was able to implement a fully working **wheel emulator**,
 which allows a **custom-built steering wheel** to operate with the Thrustmaster T248 wheelbase.
 
 All new insights have been **integrated directly into this README**.
-Most protocol-related updates can be found in:
+Most updates can be found in:
 - **The Communication Protocol**
 - **Wheel Emulator (new section)**
 
@@ -39,8 +39,8 @@ Most protocol-related updates can be found in:
     - [Button State Messages](#button-state-messages)
     - [General Data Frames](#general-data-frames)
       - [Encoder Data Analysis](#encoder-data-analysis)
-    - [Startup Sequence (NEW)](#startup-sequence-new)
-    - [Shutdown Sequence (NEW)](#shutdown-sequence-new)
+    - [Startup Sequence](#startup-sequence)
+    - [Shutdown Sequence](#shutdown-sequence)
     - [Screen Data](#screen-data)
 - [The Wheelbase](#the-wheelbase)
 - [The Screen](#the-screen)
@@ -75,9 +75,9 @@ The development process was intentionally iterative:
 - **V1.x** versions were used to incrementally reverse engineer and validate
   individual protocol features.
 - **V2.0** is the first **fully functional wheel emulator**.
-- 
+
 Earlier in the project, a separate **USB-only custom wheel implementation**
-was also created for comparison and testing.
+was created.
 
 ---
 
@@ -358,7 +358,7 @@ Observations:
   - 0x20 → Default / idle state
 
 This frame is sent:
-- periodically in idle mode (non-encoder data)
+- randomly in idle mode (non-encoder data)
 - immediately after encoder interaction (encoder data)
 
 #### Encoder Data Analysis
@@ -378,7 +378,7 @@ The emulator decodes these actions by evaluating selected bit combinations.
 
 ![EncoderData](pictures/readme/Encoder_data.png)
 
-### Startup Sequence (NEW)
+### Startup Sequence
 
 1. After power-up, the wheelbase pulls the **RESET line high for ~400 ms**,
    resetting the wheel’s STM32.
@@ -401,7 +401,7 @@ The emulator decodes these actions by evaluating selected bit combinations.
 !["Hello"Frame](pictures/readme/Startup_Sequence_2.png)
 
 
-### Shutdown Sequence (NEW)
+### Shutdown Sequence
 
 When the wheelbase is disconnected from the PC, it sends the following frame twice:
 
@@ -484,14 +484,13 @@ The T248 comes with the T3PM pedal set, which is the successor to the T3PA. Whil
 
 ### Startup Sequence Analysis
 - The complete startup and handshake sequence has been captured using an oscilloscope.
-- Logic analyzer limitations were bypassed by triggering on the RESET line.
 - The wheel sends a static “hello” frame twice after boot, which must be acknowledged
   before normal operation begins.
 
 ### Keep-Alive Messages
 - The keep-alive frames are constant.
 - Four different frames are sent cyclically at 4 Hz.
-- Each frame requires a response within ~5 ms, otherwise communication is reset.
+- Each frame requires a response within ~5 ms.
 
 ### Button State Messages
 - Only the B0 frame contains valid button data.
