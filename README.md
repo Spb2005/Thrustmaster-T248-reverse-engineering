@@ -185,9 +185,9 @@ Encoder layers renamed to:
 (The *Display EXP* encoder position is not used.)
 
 **Required libraries:**
-- Adafruit SSD1306
-- RPI_PICO_TimerInterrupt (khoih-prog)
-- Rotary (buxtronix)
+- [Adafruit SSD1306](https://github.com/adafruit/Adafruit_SSD1306)
+- [RPI_PICO_TimerInterrupt (khoih-prog)](https://github.com/khoih-prog/RPI_PICO_TimerInterrupt)
+- [Rotary (buxtronix)](https://github.com/buxtronix/arduino/tree/master/libraries/Rotary)
 
 ---
 
@@ -231,6 +231,13 @@ Finalized version with:
 
 This version is considered the **first working emulator**
 and is suitable for use with a custom-built steering wheel.
+
+**Required libraries:**
+- [Adafruit SSD1306](https://github.com/adafruit/Adafruit_SSD1306)
+- [RPI_PICO_TimerInterrupt (khoih-prog)](https://github.com/khoih-prog/RPI_PICO_TimerInterrupt)
+- [Rotary (buxtronix)](https://github.com/buxtronix/arduino/tree/master/libraries/Rotary)
+
+And the [arduino-pico](https://github.com/earlephilhower/arduino-pico) core from earlephilhower 
 
 ---
 
