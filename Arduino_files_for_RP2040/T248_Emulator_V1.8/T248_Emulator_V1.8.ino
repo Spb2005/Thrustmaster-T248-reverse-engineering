@@ -190,7 +190,7 @@ void setup() {
   display.println("T248");
   display.display();
   displayNeedsUpdate = false;
-  ITimer0.attachInterruptInterval(5000 * 1000, resetSymbol);
+  ITimer0.attachInterruptInterval(6000 * 1000, resetSymbol);
 }
 
 void sendInitSequence() {
@@ -241,7 +241,6 @@ void loop() {
     setBit(btnByte1, 4, 0);
     setBit(btnByte1, 5, 0);
     setBit(btnByte1, 6, 0);
-    displayNeedsUpdate = true;
   }
 
   //Read Interrupt Button state
